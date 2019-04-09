@@ -69,6 +69,11 @@ class Heap{
       }
     }
 
+    T Min()
+    {
+      return H[0];
+    }
+
 
 
 };
@@ -82,7 +87,12 @@ int main()
   b = Heap1->Insert(13);
   b = Heap1->Insert(9);
   b = Heap1->Insert(1);
+  b = Heap1->Insert(1);
+  b = Heap1->Insert(1);
+  b = Heap1->Insert(-11);
+  b = Heap1->Insert(-12);
 
   Heap1->print();
+  cout<<"Minimum element is : "<<Heap1->Min()<<endl;
   return 0;
 }
