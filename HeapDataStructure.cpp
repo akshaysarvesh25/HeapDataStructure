@@ -74,6 +74,65 @@ class Heap{
       return H[0];
     }
 
+    bool MakeHeap_Child(std::vector<T> H11,int i)
+    {
+      if((2*i)+1>(H11.size()-1))
+      {
+        return true;
+      }
+
+      if(H11[((2*i)+1)]<=H11[((2*i)+2)])
+      {
+        if(H11[i]<=H11[((2*i)+2)])
+        {
+          return true;
+        }
+        else
+        {
+          H = Swap(H11,i,((2*i)+1));
+          return MakeHeap_Child(H,((2*i)+1));
+        }
+      }
+      else
+      {
+        if(H11[i]<=H11[((2*i)+2)])
+        {
+          return true;
+        }
+
+        else
+        {
+          H = Swap(H11,i,((2*i)+2));
+          return MakeHeap_Child(H,((2*i)+2));
+        }
+      }
+    }
+
+    bool Delete(T index)
+    {
+      if(H.size() == 0)
+      {
+        return false;
+      }
+
+      else
+      {
+        H[index] = H[H.size()-1];
+        H.erase(H.end()-1);
+        unsigned int P_idx = (double)(index-1)/2;
+
+        if(H[index]<=H[P_idx])
+        {
+          return MakeHeap_Parent(H,index);
+        }
+        else if((H[index]>=H[(2*index)+1])||(H[index]>=H[(2*index)+2]))
+        {
+          return MakeHeap_Child(H,index);
+        }
+      }
+
+    }
+
 
 
 };
@@ -92,6 +151,12 @@ int main()
   b = Heap1->Insert(-11);
   b = Heap1->Insert(-12);
 
+  Heap1->print();
+  Heap1->Delete(2);
+  Heap1->Delete(3);
+  Heap1->Delete(4);
+  cout<<"Deleting indices : 2,3,4"<<endl;
+  cout<<"New Heap: "<<endl;
   Heap1->print();
   cout<<"Minimum element is : "<<Heap1->Min()<<endl;
   return 0;
