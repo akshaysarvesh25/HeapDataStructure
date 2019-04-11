@@ -65,6 +65,9 @@ class Heap{
         else
         {
           H = Swap(H11,i,((2*i)+1));
+          int TempPos = position[H[i]];
+          position[H[i]] = position[H[(2*i)+1]];
+          position[H[(2*i)+1]] = TempPos;
           EdgeWeight = Swap(weight11,i,((2*i)+1));
           return MakeHeap_Child(EdgeWeight,H,((2*i)+1));
         }
@@ -79,6 +82,9 @@ class Heap{
         else
         {
           H = Swap(H11,i,((2*i)+2));
+          int TempPos = position[H[i]];
+          position[H[i]] = position[H[(2*i)+1]];
+          position[H[(2*i)+1]] = TempPos;
           EdgeWeight = Swap(weight11,i,((2*i)+2));
           return MakeHeap_Child(EdgeWeight,H,((2*i)+2));
         }
@@ -138,7 +144,10 @@ class Heap{
 
       else
       {
+        int TempPos1 = position[H[index]];
+        position[H[index]] = -1;
         H[index] = H[H.size()-1];
+        position[H[H.size()-1]] = TempPos1;
         EdgeWeight[index] = EdgeWeight[EdgeWeight.size()-1];
         H.erase(H.end()-1);
         EdgeWeight.erase(EdgeWeight.end()-1);
@@ -179,15 +188,21 @@ int main()
   b = Heap1->Insert(9,2);
   b = Heap1->Insert(12,2);
   Heap1->print();
-  /*
-  cout<<"Deleting..\n";
+
+  cout<<"Deleting..2\n";
   Heap1->Delete(2);
+  Heap1->print();
+  cout<<"Inserting..2 and 13\n";
+  b = Heap1->Insert(1,2);
+  b = Heap1->Insert(13,1);
+  Heap1->print();
+  /*
   Heap1->print();
   cout<<"Adding..\n";
   b = Heap1->Insert(9,2);
   Heap1->print();
   */
-  for(int i = 0;i<13;i++)
+  for(int i = 0;i<14;i++)
   {
     cout<<"Position of "<<i<<" : "<<Heap1->position[i]<<endl;
   }
