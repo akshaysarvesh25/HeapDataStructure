@@ -11,6 +11,7 @@ class Heap{
 
   private:
     std::vector<T> H;
+    std::vector<T> EdgeWeight;
     T *tail;
 
     std::vector<T> Swap(std::vector<T> H_,int x,int y)
@@ -21,12 +22,12 @@ class Heap{
       return H_;
     }
 
-    bool MakeHeap_Parent(std::vector<T> H_,int n)
+    bool MakeHeap_Parent(std::vector<T> weight_MP, std::vector<T> H_,int n)
     {
       //cout<<"Index : "<<" : "<<(n-1)/2<<endl;
       unsigned int Parent_idx = (double)(n-1)/2;
-      cout<<"Parent_idx : "<<Parent_idx<<endl;
-      if(H_[n]>=H_[Parent_idx])
+      //cout<<"Parent_idx : "<<Parent_idx<<endl;
+      if(weight_MP[n]>=weight_MP[Parent_idx])
       {
         return true;
       }
@@ -35,17 +36,20 @@ class Heap{
       {
         std::vector<T> H1 = Swap(H_,n,Parent_idx);
         H = H1;
-        return MakeHeap_Parent(H1,Parent_idx);
+        std::vector<T> weight_MP_1 = Swap(weight_MP,n,Parent_idx);
+        EdgeWeight = weight_MP_1;
+        return MakeHeap_Parent(weight_MP_1,H1,Parent_idx);
       }
 
     }
 
   public:
-    bool Insert(T value)
+    bool Insert(T value,T weight)
     {
       if(H.size() == 0)
       {
         H.push_back(value);
+        EdgeWeight.push_back(weight);
         //cout<<"Adding root"<<endl;
         return true;
       }
@@ -54,9 +58,10 @@ class Heap{
       {
         //cout<<"size : "<<H.size()<<endl;
         H.push_back(value);
+        EdgeWeight.push_back(weight);
         //cout<<"Adding element to heap"<<endl;
-        cout<<"H.size() : "<<H.size()-1<<endl;
-        return MakeHeap_Parent(H,(H.size()-1));
+        //cout<<"H.size() : "<<H.size()-1<<endl;
+        return MakeHeap_Parent(EdgeWeight,H,(H.size()-1));
 
       }
     }
@@ -65,7 +70,7 @@ class Heap{
     {
       for(unsigned int i = 0;i<H.size();i++)
       {
-        std::cout<<H[i]<<std::endl;
+        std::cout<<H[i]<<" "<<EdgeWeight[i]<<std::endl;
       }
     }
 
@@ -74,28 +79,29 @@ class Heap{
       return H[0];
     }
 
-    bool MakeHeap_Child(std::vector<T> H11,int i)
+    bool MakeHeap_Child(std::vector<T> weight11,std::vector<T> H11,int i)
     {
       if((2*i)+1>(H11.size()-1))
       {
         return true;
       }
 
-      if(H11[((2*i)+1)]<=H11[((2*i)+2)])
+      if(weight11[((2*i)+1)]<=weight11[((2*i)+2)])
       {
-        if(H11[i]<=H11[((2*i)+2)])
+        if(weight11[i]<=weight11[((2*i)+2)])
         {
           return true;
         }
         else
         {
           H = Swap(H11,i,((2*i)+1));
-          return MakeHeap_Child(H,((2*i)+1));
+          EdgeWeight = Swap(weight11,i,((2*i)+1));
+          return MakeHeap_Child(EdgeWeight,H,((2*i)+1));
         }
       }
       else
       {
-        if(H11[i]<=H11[((2*i)+2)])
+        if(weight11[i]<=weight11[((2*i)+2)])
         {
           return true;
         }
@@ -103,7 +109,8 @@ class Heap{
         else
         {
           H = Swap(H11,i,((2*i)+2));
-          return MakeHeap_Child(H,((2*i)+2));
+          EdgeWeight = Swap(weight11,i,((2*i)+2));
+          return MakeHeap_Child(EdgeWeight,H,((2*i)+2));
         }
       }
     }
@@ -112,22 +119,25 @@ class Heap{
     {
       if(H.size() == 0)
       {
+        cout<<"Nothing to delete"<<endl;
         return false;
       }
 
       else
       {
         H[index] = H[H.size()-1];
+        EdgeWeight[index] = EdgeWeight[EdgeWeight.size()-1];
         H.erase(H.end()-1);
+        EdgeWeight.erase(EdgeWeight.end()-1);
         unsigned int P_idx = (double)(index-1)/2;
 
-        if(H[index]<=H[P_idx])
+        if(EdgeWeight[index]<=EdgeWeight[P_idx])
         {
-          return MakeHeap_Parent(H,index);
+          return MakeHeap_Parent(EdgeWeight,H,index);
         }
-        else if((H[index]>=H[(2*index)+1])||(H[index]>=H[(2*index)+2]))
+        else if((EdgeWeight[index]>=EdgeWeight[(2*index)+1])||(EdgeWeight[index]>=EdgeWeight[(2*index)+2]))
         {
-          return MakeHeap_Child(H,index);
+          return MakeHeap_Child(EdgeWeight,H,index);
         }
       }
 
@@ -140,24 +150,41 @@ class Heap{
 int main()
 {
   Heap<int> *Heap1 = new Heap<int>();
-  bool b = Heap1->Insert(10);
-  b = Heap1->Insert(11);
-  b = Heap1->Insert(12);
-  b = Heap1->Insert(13);
-  b = Heap1->Insert(9);
-  b = Heap1->Insert(1);
-  b = Heap1->Insert(1);
-  b = Heap1->Insert(1);
-  b = Heap1->Insert(-11);
-  b = Heap1->Insert(-12);
+  bool b = Heap1->Insert(10,20);
+  b = Heap1->Insert(11,2);
+  b = Heap1->Insert(12,2);
+  b = Heap1->Insert(13,3);
+  b = Heap1->Insert(9,2);
+  b = Heap1->Insert(14,1);
+  b = Heap1->Insert(8,19);
+  b = Heap1->Insert(40,1);
+  Heap1->print();
+  cout<<"Deleting..\n";
+  Heap1->Delete(2);
+  Heap1->print();
+  cout<<"Adding..\n";
+  b = Heap1->Insert(11,2);
+  Heap1->print();
+
+  /*
+
+
+  b = Heap1->Insert(9,3);
+  b = Heap1->Insert(1,5);
+  b = Heap1->Insert(1,6);
+  b = Heap1->Insert(1,7);
+  b = Heap1->Insert(-11,8);
+  b = Heap1->Insert(-12,9);
 
   Heap1->print();
-  Heap1->Delete(2);
+  /*
+
   Heap1->Delete(3);
   Heap1->Delete(4);
   cout<<"Deleting indices : 2,3,4"<<endl;
   cout<<"New Heap: "<<endl;
   Heap1->print();
   cout<<"Minimum element is : "<<Heap1->Min()<<endl;
+  */
   return 0;
 }
