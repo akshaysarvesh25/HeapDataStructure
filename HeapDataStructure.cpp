@@ -174,11 +174,9 @@ int main()
   Heap<int> *Heap1 = new Heap<int>();
   bool b = Heap1->Insert(7,1);
   b = Heap1->Insert(3,3);
-
   b = Heap1->Insert(1,2);
   b = Heap1->Insert(5,1);
   b = Heap1->Insert(4,2);
-
   b = Heap1->Insert(2,2);
   b = Heap1->Insert(0,20);
   b = Heap1->Insert(6,19);
@@ -188,7 +186,6 @@ int main()
   b = Heap1->Insert(9,2);
   b = Heap1->Insert(12,2);
   Heap1->print();
-
   cout<<"Deleting..2\n";
   Heap1->Delete(2);
   Heap1->print();
@@ -196,16 +193,18 @@ int main()
   b = Heap1->Insert(1,2);
   b = Heap1->Insert(13,1);
   Heap1->print();
+  
+  for(int i = 0;i<14;i++)
+  {
+    cout<<"Position of "<<i<<" : "<<Heap1->position[i]<<endl;
+  }
   /*
   Heap1->print();
   cout<<"Adding..\n";
   b = Heap1->Insert(9,2);
   Heap1->print();
   */
-  for(int i = 0;i<14;i++)
-  {
-    cout<<"Position of "<<i<<" : "<<Heap1->position[i]<<endl;
-  }
+
   /*
 
 
