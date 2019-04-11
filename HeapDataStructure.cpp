@@ -19,6 +19,8 @@ class Heap{
       T temp = H_[x];
       H_[x] = H_[y];
       H_[y] = temp;
+
+
       return H_;
     }
 
@@ -30,53 +32,21 @@ class Heap{
       if(weight_MP[n]>=weight_MP[Parent_idx])
       {
         return true;
+
       }
 
       else
       {
         std::vector<T> H1 = Swap(H_,n,Parent_idx);
         H = H1;
+        int TempPos = position[H_[n]];
+        position[H_[n]] = position[H_[Parent_idx]];
+        position[H_[Parent_idx]] = TempPos;
         std::vector<T> weight_MP_1 = Swap(weight_MP,n,Parent_idx);
         EdgeWeight = weight_MP_1;
         return MakeHeap_Parent(weight_MP_1,H1,Parent_idx);
       }
 
-    }
-
-  public:
-    bool Insert(T value,T weight)
-    {
-      if(H.size() == 0)
-      {
-        H.push_back(value);
-        EdgeWeight.push_back(weight);
-        //cout<<"Adding root"<<endl;
-        return true;
-      }
-
-      else
-      {
-        //cout<<"size : "<<H.size()<<endl;
-        H.push_back(value);
-        EdgeWeight.push_back(weight);
-        //cout<<"Adding element to heap"<<endl;
-        //cout<<"H.size() : "<<H.size()-1<<endl;
-        return MakeHeap_Parent(EdgeWeight,H,(H.size()-1));
-
-      }
-    }
-
-    void print()
-    {
-      for(unsigned int i = 0;i<H.size();i++)
-      {
-        std::cout<<H[i]<<" "<<EdgeWeight[i]<<std::endl;
-      }
-    }
-
-    T Min()
-    {
-      return H[0];
     }
 
     bool MakeHeap_Child(std::vector<T> weight11,std::vector<T> H11,int i)
@@ -115,6 +85,49 @@ class Heap{
       }
     }
 
+  public:
+    /* Position of the element in the heap */
+    int position[5000];
+
+    bool Insert(T value,T weight)
+    {
+      if(H.size() == 0)
+      {
+        H.push_back(value);
+        EdgeWeight.push_back(weight);
+        position[value] = H.size()-1;
+        //cout<<"Added an element, H.size() is : "<<H.size()<<endl;
+        return true;
+      }
+
+      else
+      {
+        //cout<<"size : "<<H.size()<<endl;
+        H.push_back(value);
+        EdgeWeight.push_back(weight);
+
+        position[value] = H.size()-1;
+        //cout<<"Adding element to heap"<<endl;
+        //cout<<"H.size() : "<<H.size()<<endl;
+        return MakeHeap_Parent(EdgeWeight,H,(H.size()-1));
+
+      }
+    }
+
+    void print()
+    {
+      for(unsigned int i = 0;i<H.size();i++)
+      {
+        std::cout<<H[i]<<" "<<EdgeWeight[i]<<std::endl;
+      }
+    }
+
+    T Min()
+    {
+      return H[0];
+    }
+
+
     bool Delete(T index)
     {
       if(H.size() == 0)
@@ -150,22 +163,34 @@ class Heap{
 int main()
 {
   Heap<int> *Heap1 = new Heap<int>();
-  bool b = Heap1->Insert(10,20);
+  bool b = Heap1->Insert(7,1);
+  b = Heap1->Insert(3,3);
+
+  b = Heap1->Insert(1,2);
+  b = Heap1->Insert(5,1);
+  b = Heap1->Insert(4,2);
+
+  b = Heap1->Insert(2,2);
+  b = Heap1->Insert(0,20);
+  b = Heap1->Insert(6,19);
+  b = Heap1->Insert(10,2);
+  b = Heap1->Insert(8,2);
   b = Heap1->Insert(11,2);
-  b = Heap1->Insert(12,2);
-  b = Heap1->Insert(13,3);
   b = Heap1->Insert(9,2);
-  b = Heap1->Insert(14,1);
-  b = Heap1->Insert(8,19);
-  b = Heap1->Insert(40,1);
+  b = Heap1->Insert(12,2);
   Heap1->print();
+  /*
   cout<<"Deleting..\n";
   Heap1->Delete(2);
   Heap1->print();
   cout<<"Adding..\n";
-  b = Heap1->Insert(11,2);
+  b = Heap1->Insert(9,2);
   Heap1->print();
-
+  */
+  for(int i = 0;i<13;i++)
+  {
+    cout<<"Position of "<<i<<" : "<<Heap1->position[i]<<endl;
+  }
   /*
 
 
