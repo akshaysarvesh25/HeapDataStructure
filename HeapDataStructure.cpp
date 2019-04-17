@@ -128,7 +128,7 @@ class Heap{
       }
     }
 
-    T Min()
+    T Max()
     {
       return H[0];
     }
