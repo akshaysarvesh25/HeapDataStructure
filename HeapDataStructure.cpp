@@ -29,7 +29,7 @@ class Heap{
       //cout<<"Index : "<<" : "<<(n-1)/2<<endl;
       unsigned int Parent_idx = (double)(n-1)/2;
       //cout<<"Parent_idx : "<<Parent_idx<<endl;
-      if(weight_MP[n]>=weight_MP[Parent_idx])
+      if(weight_MP[n]<=weight_MP[Parent_idx])
       {
         return true;
 
@@ -56,9 +56,9 @@ class Heap{
         return true;
       }
 
-      if(weight11[((2*i)+1)]<=weight11[((2*i)+2)])
+      if(weight11[((2*i)+1)]>=weight11[((2*i)+2)])
       {
-        if(weight11[i]<=weight11[((2*i)+2)])
+        if(weight11[i]>=weight11[((2*i)+2)])
         {
           return true;
         }
@@ -74,7 +74,7 @@ class Heap{
       }
       else
       {
-        if(weight11[i]<=weight11[((2*i)+2)])
+        if(weight11[i]>=weight11[((2*i)+2)])
         {
           return true;
         }
@@ -153,11 +153,11 @@ class Heap{
         EdgeWeight.erase(EdgeWeight.end()-1);
         unsigned int P_idx = (double)(index-1)/2;
 
-        if(EdgeWeight[index]<=EdgeWeight[P_idx])
+        if(EdgeWeight[index]>=EdgeWeight[P_idx])
         {
           return MakeHeap_Parent(EdgeWeight,H,index);
         }
-        else if((EdgeWeight[index]>=EdgeWeight[(2*index)+1])||(EdgeWeight[index]>=EdgeWeight[(2*index)+2]))
+        else if((EdgeWeight[index]<=EdgeWeight[(2*index)+1])||(EdgeWeight[index]<=EdgeWeight[(2*index)+2]))
         {
           return MakeHeap_Child(EdgeWeight,H,index);
         }
@@ -192,8 +192,9 @@ int main()
   cout<<"Inserting..2 and 13\n";
   b = Heap1->Insert(1,2);
   b = Heap1->Insert(13,1);
+  b = Heap1->Insert(3,7);
   Heap1->print();
-  
+
   for(int i = 0;i<14;i++)
   {
     cout<<"Position of "<<i<<" : "<<Heap1->position[i]<<endl;
