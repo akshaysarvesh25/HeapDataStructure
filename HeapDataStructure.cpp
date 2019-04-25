@@ -3,6 +3,20 @@
 #include<vector>
 #include <cmath>
 
+#include <sys/time.h>
+
+/**
+ * Returns the current time in microseconds.
+ */
+
+ long getMicrotime();
+
+long getMicrotime(){
+	struct timeval currentTime;
+	gettimeofday(&currentTime, NULL);
+	return currentTime.tv_sec * (int)1e6 + currentTime.tv_usec;
+}
+
 using namespace std;
 
 
@@ -171,7 +185,19 @@ class Heap{
 
 int main()
 {
+
+  long time1 = getMicrotime();
   Heap<int> *Heap1 = new Heap<int>();
+
+  for(int i = 0; i<4096*16;i++)
+  { unsigned int x = rand()%100;
+    unsigned int y = rand()%10;
+    Heap1->Insert(x,y);
+  }
+  long time2 = getMicrotime();
+
+  cout<<"Total time taken : "<<time2-time1<<endl;
+  /*
   bool b = Heap1->Insert(7,1);
   b = Heap1->Insert(3,3);
   b = Heap1->Insert(1,2);
